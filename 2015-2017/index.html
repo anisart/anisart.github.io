@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Strava ride heatmap 2015 vs 2017</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<style>
+body {
+    overflow: hidden;
+}
+
+body * {
+   -webkit-touch-callout: none;
+     -webkit-user-select: none;
+        -moz-user-select: none;
+         -ms-user-select: none;
+             user-select: none;
+}
+
+.map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+</style>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
+
+<div id='before' class='map'></div>
+<div id='after' class='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYW5pc2FydCIsImEiOiJjajl3bGVoOHg3YTNmMzNvcnQ0MXZkejI0In0.hwTgKcCocqj3RmezYa52aw';
+var beforeMap = new mapboxgl.Map({
+    container: 'before',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [0, 0],
+    zoom: 0
+});
+
+beforeMap.on('load', function() {
+    beforeMap.addLayer({
+        'id': 'heat2015',
+        'type': 'raster',
+        'source': {
+            'type': 'raster',
+            'tiles': [
+                'http://globalheat.strava.com/tiles/cycling/color1/{z}/{x}/{y}.png'
+            ],
+            'tileSize': 256
+        },
+        'maxzoom': 16
+    }, 'waterway-label');
+})
+
+var afterMap = new mapboxgl.Map({
+    container: 'after',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [0, 0],
+    zoom: 0
+});
+
+afterMap.on('load', function() {
+    afterMap.addLayer({
+        'id': 'heat2017',
+        'type': 'raster',
+        'source': {
+            'type': 'raster',
+            'tiles': [
+                'http://heatmap-external-a.strava.com/tiles/ride/bluered/{z}/{x}/{y}.png?px=256'
+            ],
+            'tileSize': 256
+        },
+        'maxzoom': 16
+    }, 'waterway-label');
+
+    alert('For viewing heatmap 2017 you need to disable CORS check in browser. For example via this Chrome extension https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc')
+})
+
+var map = new mapboxgl.Compare(beforeMap, afterMap, {
+    // Set this to enable comparing two maps by mouse movement:
+    // mousemove: true
+});
+</script>
+
+</body>
+</html>
