@@ -1,3 +1,8 @@
+---
+layout: default
+title: Privacy Policy
+---
+
 # Privacy Policy for Open Strava Flyby
 
 **Last updated: July 3, 2025**
